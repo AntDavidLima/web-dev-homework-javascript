@@ -1,202 +1,167 @@
+const valorIMC = document.getElementById("valor-IMC");
+const cardResultado = document.getElementById("idCardResultado");
 
-const MENSAGEM_IMC = "Seu IMC é ";
-const MENSAGEM_PRECO = "R$  ";
+const precoPlanos = {
+	a: {
+		basico: document.getElementById("precoPlanoBasicoA"),
+		standard: document.getElementById("precoPlanoStandardA"),
+		premium: document.getElementById("precoPlanoPremiumA"),
+	},
+	b: {
+		basico: document.getElementById("precoPlanoBasicoB"),
+		standard: document.getElementById("precoPlanoStandardB"),
+		premium: document.getElementById("precoPlanoPremiumB"),
+	},
+};
 
-const ID_PRECO_PLANO_BASICO_A = "precoPlanoBasicoA";
-const ID_PRECO_PLANO_STANDARD_A = "precoPlanoStandardA";
-const ID_PRECO_PLANO_PREMIUM_A = "precoPlanoPremiumA";
-const ID_PRECO_PLANO_BASICO_B = "precoPlanoBasicoB";
-const ID_PRECO_PLANO_STANDARD_B = "precoPlanoStandardB";
-const ID_PRECO_PLANO_PREMIUM_B = "precoPlanoPremiumB";
+function calcularIMC() {
+	const nomeElement = document.getElementById("nome");
+	const pesoElement = document.getElementById("peso");
+	const idadeElement = document.getElementById("idade");
+	const alturaElement = document.getElementById("altura");
 
-let imc = 0;
-let listaPrecosOperadoraA = [];
-let listaPrecosOperadoraB = [];
+	const nome = nomeElement.value;
+	const peso = parseFloat(new String(pesoElement.value).replace(",", "."));
+	const idade = parseInt(idadeElement.value);
+	const altura = parseInt(new String(alturaElement.value).replace(",", "."));
 
-function calcularIMC(){
-    const ID_DIV_IMC = "divIMC";
-    const ID_RESULTADO = "idCardResultado";
+	console.log(nome, peso, idade, altura);
 
-    let nome = document.getElementById("nome");
-    nome = nome.value;
+	if (parametrosContemErros(nome, peso, idade, altura)) {
+		limparPagina();
+		return;
+	}
 
-    let peso = document.getElementById("peso"); 
-    peso = parseFloat(new String(peso.value).replace(",", "."));
+	const imc = (peso / ((altura / 100) * (altura / 100))).toFixed(2);
+	valorIMC.textContent = imc;
 
-    let idade = document.getElementById("idade");
-    idade = parseInt(idade.value);
+	const fatorComorbidade = verificarFatorComorbidade(imc);
 
-    let altura = document.getElementById("altura");
-    altura = parseFloat(new String(altura.value).replace(",", "."));
+	calcularEFormatarValoresPlanosOperadoraA(idade, imc);
+	calcularEFormatarValoresPlanosOperadoraB(fatorComorbidade, imc);
 
-    if(verificarParametros(nome, peso, idade, altura)){
-        imc = 0;
-        popularInnerHTML(ID_DIV_IMC, (MENSAGEM_IMC + imc));
-        zerarPrecoPlanos();
-        mostrarElemento(ID_RESULTADO, false);
-        return;
-    }
-
-    imc = (peso / (altura * altura)).toFixed(2);
-    popularInnerHTML(ID_DIV_IMC, (MENSAGEM_IMC + imc));
-
-    calcularEFormatarValoresPlanosOperadoraA(idade);
-    calcularEFormatarValoresPlanosOperadoraB(verificarFatorComorbidade());
-
-    mostrarResultado(nome);
-    mostrarElemento(ID_RESULTADO, true);
+	mostrarResultado(nome);
 }
 
 function mostrarResultado(nome) {
-    let numeroPlanoMaisBarato = 0;
-    let nomeOperadora = "A";
-    let precoPlanoMaisBarato = listaPrecosOperadoraA[0].toFixed(2);
+	const nomePlanoMap = {
+		basico: "Básico",
+		standard: "Standard",
+		premium: "Premium",
+	};
 
-    for(let indiceA = 0; indiceA < listaPrecosOperadoraA.length; indiceA++ ) {
-        if(precoPlanoMaisBarato > listaPrecosOperadoraA[indiceA]) {
-            nomeOperadora = "A";
-            precoPlanoMaisBarato = listaPrecosOperadoraA[indiceA].toFixed(2);
-            numeroPlanoMaisBarato = indiceA;
-        }
-    }
+	const [nomePlanoMaisBaratoOperadoraA, valorPlanoMaisBaratoOperadoraA] =
+		Object.entries(precoPlanos.a).reduce((anterior, atual) => {
+			return parseFloat(anterior[1].textContent) <
+				parseFloat(atual[1].textContent)
+				? anterior
+				: atual;
+		});
 
-    for(let indiceB = 0; indiceB < listaPrecosOperadoraB.length; indiceB++ ) {
-        if(precoPlanoMaisBarato > listaPrecosOperadoraB[indiceB]) {
-            nomeOperadora = "B";
-            precoPlanoMaisBarato = listaPrecosOperadoraB[indiceB].toFixed(2);
-            numeroPlanoMaisBarato = indiceB;
-        }
-    }   
-    
-    let nomePlano = retonarNomePlano(numeroPlanoMaisBarato);
-    popularInnerHTML("idResultado", `<strong>Caro(a) ${nome}, o plano ideal para você é o plano ${nomePlano} da Operadora ${nomeOperadora} de R$ ${precoPlanoMaisBarato}.</strong>`);
+	const [nomePlanoMaisBaratoOperadoraB, valorPlanoMaisBaratoOperadoraB] =
+		Object.entries(precoPlanos.b).reduce((anterior, atual) => {
+			return parseFloat(anterior[1].textContent) <
+				parseFloat(atual[1].textContent)
+				? anterior
+				: atual;
+		});
+
+	const planoMaisBarato =
+		parseFloat(valorPlanoMaisBaratoOperadoraA.textContent) <
+			parseFloat(valorPlanoMaisBaratoOperadoraB.textContent)
+			? {
+				plano: nomePlanoMap[nomePlanoMaisBaratoOperadoraA],
+				operadora: "A",
+				valor: valorPlanoMaisBaratoOperadoraA.textContent,
+			}
+			: {
+				plano: nomePlanoMap[nomePlanoMaisBaratoOperadoraB],
+				operadora: "B",
+				valor: valorPlanoMaisBaratoOperadoraB.textContent,
+			};
+
+	document.getElementById("idResultado").textContent =
+		`Caro(a) ${nome}, levando em consideração apenas a informação do valor dos planos, o plano ideal para você é o plano ${planoMaisBarato.plano} da Operadora ${planoMaisBarato.operadora}. Custando ${planoMaisBarato.valor}`;
+
+	cardResultado.classList.remove("visually-hidden");
 }
 
-function retonarNomePlano(numeroPlano) {
-    if(numeroPlano == 0){
-        return "Básico";
+function calcularEFormatarValoresPlanosOperadoraA(idade, imc) {
+	precoPlanos.a.basico.textContent = (100 + idade * 10 * (imc / 10)).toFixed(2);
 
-    } else if(numeroPlano == 1) {
-        return "Standard";
+	precoPlanos.a.standard.textContent = (
+		(150 + idade * 15) *
+		(imc / 10)
+	).toFixed(2);
 
-    } else if(numeroPlano == 2) {
-        return "Premium";
-    } else {
-        return "X";
-    }
+	precoPlanos.a.premium.textContent = (
+		(200 - imc * 10 + idade * 20) *
+		(imc / 10)
+	).toFixed(2);
 }
 
-function calcularEFormatarValoresPlanosOperadoraA(idade){
-    listaPrecosOperadoraA = [];
-
-    listaPrecosOperadoraA.push(parseFloat(100 + (idade * 10 * (imc / 10))));
-    listaPrecosOperadoraA.push(parseFloat((150 + (idade * 15)) * (imc / 10)));
-    listaPrecosOperadoraA.push(parseFloat((200 - (imc * 10) + (idade * 20)) * (imc / 10)));
-    
-    popularInnerHTML(ID_PRECO_PLANO_BASICO_A, (MENSAGEM_PRECO + listaPrecosOperadoraA[0].toFixed(2)));
-    popularInnerHTML(ID_PRECO_PLANO_STANDARD_A, (MENSAGEM_PRECO + listaPrecosOperadoraA[1].toFixed(2)));
-    popularInnerHTML(ID_PRECO_PLANO_PREMIUM_A, (MENSAGEM_PRECO + listaPrecosOperadoraA[2].toFixed(2)));
+function verificarFatorComorbidade(imc) {
+	switch (imc) {
+		case imc <= 18.4:
+			return 10;
+		case imc >= 18.5 && imc <= 24.9:
+			return 1;
+		case imc >= 25 && imc <= 29.9:
+			return 6;
+		case imc >= 30 && imc <= 34.9:
+			return 10;
+		case imc >= 35 && imc <= 40:
+			return 20;
+		default:
+			return 30;
+	}
 }
 
-function verificarFatorComorbidade() {
-console.log("imc: "+ imc);
+function calcularEFormatarValoresPlanosOperadoraB(fatorComorbidade, imc) {
+	precoPlanos.b.basico.textContent = (
+		100 +
+		fatorComorbidade * 10 * (imc / 10)
+	).toFixed(2);
 
-    if(imc < 18.5){
-        console.log("1");
-        return 10;
+	precoPlanos.b.standard.textContent = (
+		(150 + fatorComorbidade * 15) *
+		(imc / 10)
+	).toFixed(2);
 
-    } else if(imc >= 18.5 && imc < 25) {
-        console.log("2");
-        return 1;
-
-    } else if(imc >= 25 && imc < 30) {
-        console.log("3");
-        return 6;
-
-    } else if(imc >= 30 && imc < 35) {
-        console.log("4");
-        return 10;
-
-    } else if(imc >= 35 && imc <= 40) {
-        console.log("5");
-        return 20;
-
-    } else {
-        return 30;
-    } 
+	precoPlanos.b.premium.textContent = (
+		(200 - imc * 10 + fatorComorbidade * 20) *
+		(imc / 10)
+	).toFixed(2);
 }
 
-function calcularEFormatarValoresPlanosOperadoraB(fatoComorbidade){
-    listaPrecosOperadoraB = [];
+function parametrosContemErros(nome, peso, idade, altura) {
+	if (typeof nome !== "string" || nome.trim().length === 0) {
+		return true;
+	}
 
-    console.log(fatoComorbidade);
+	if (isNaN(peso) || peso <= 0) {
+		return true;
+	}
 
-    listaPrecosOperadoraB.push(parseFloat(100 + (fatoComorbidade * 10 * (imc / 10))));
-    listaPrecosOperadoraB.push(parseFloat((150 + (fatoComorbidade * 15)) * (imc / 10)));
-    listaPrecosOperadoraB.push(parseFloat((200 - (imc * 10) + (fatoComorbidade * 20)) * (imc / 10)));
-    
-    popularInnerHTML(ID_PRECO_PLANO_BASICO_B, (MENSAGEM_PRECO + listaPrecosOperadoraB[0].toFixed(2)));
-    popularInnerHTML(ID_PRECO_PLANO_STANDARD_B, (MENSAGEM_PRECO + listaPrecosOperadoraB[1].toFixed(2)));
-    popularInnerHTML(ID_PRECO_PLANO_PREMIUM_B, (MENSAGEM_PRECO + listaPrecosOperadoraB[2].toFixed(2)));
+	if (isNaN(idade) || idade <= 0) {
+		return true;
+	}
+
+	if (isNaN(altura) || altura <= 0) {
+		return true;
+	}
+
+	return false;
 }
 
-function verificarParametros(nome, peso, idade, altura){
-    let isParametrosCorretos = true;
-    const ID_FEEDBACK_NOME = "feedback-nome";
-    const ID_FEEDBACK_PESO = "feedback-peso";
-    const ID_FEEDBACK_IDADE = "feedback-idade";
-    const ID_FEEDBACK_ALTURA = "feedback-altura";
-    
-    if(nome == ''){
-        mostrarElemento(ID_FEEDBACK_NOME, true);
-        isParametrosCorretos = false;
-    } else {
-        mostrarElemento(ID_FEEDBACK_NOME, false);
-    }
+function limparPagina() {
+	valorIMC.textContent = "0";
 
-    if(isNaN(peso)){
-        mostrarElemento(ID_FEEDBACK_PESO, true);
-        isParametrosCorretos = false;
+	new Array("a", "b").forEach((operadora) => {
+		new Array("basico", "standard", "premium").forEach((plano) => {
+			precoPlanos[operadora][plano].textContent = "0.00";
+		});
+	});
 
-    } else {
-        mostrarElemento(ID_FEEDBACK_PESO, false);
-    }
-
-    if(isNaN(idade)){
-        mostrarElemento(ID_FEEDBACK_IDADE, true);
-        isParametrosCorretos = false;
-    } else {
-        mostrarElemento(ID_FEEDBACK_IDADE, false);
-    }
-
-    if(isNaN(altura)){
-        mostrarElemento(ID_FEEDBACK_ALTURA, true);
-        isParametrosCorretos = false;
-    } else {
-        mostrarElemento(ID_FEEDBACK_ALTURA, false);
-    }
-
-    return !isParametrosCorretos;
-}
-
-function zerarPrecoPlanos() {
-    popularInnerHTML(ID_PRECO_PLANO_BASICO_A, (MENSAGEM_PRECO +  parseFloat(0).toFixed(2)));
-    popularInnerHTML(ID_PRECO_PLANO_STANDARD_A, (MENSAGEM_PRECO + parseFloat(0).toFixed(2)));
-    popularInnerHTML(ID_PRECO_PLANO_PREMIUM_A, (MENSAGEM_PRECO + parseFloat(0).toFixed(2)));
-
-    popularInnerHTML(ID_PRECO_PLANO_BASICO_B, (MENSAGEM_PRECO +  parseFloat(0).toFixed(2)));
-    popularInnerHTML(ID_PRECO_PLANO_STANDARD_B, (MENSAGEM_PRECO + parseFloat(0).toFixed(2)));
-    popularInnerHTML(ID_PRECO_PLANO_PREMIUM_B, (MENSAGEM_PRECO + parseFloat(0).toFixed(2)));
-}
-
-function popularInnerHTML(id, valor) {
-    document.getElementById(id).innerHTML = valor;
-}
-
-function mostrarElemento(idFeedback, isMostrar) {
-    if(isMostrar){
-        document.getElementById(idFeedback).style.display = "";
-    } else {
-        document.getElementById(idFeedback).style.display = "none";
-    }
+	cardResultado.classList.add("visually-hidden");
 }

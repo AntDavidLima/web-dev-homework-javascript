@@ -1,247 +1,212 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <title>Comparador de Planos</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="https://logosmarcas.net/wp-content/uploads/2022/01/Red-Cross-Simbolo.png"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script>
-    <script src="javascript.js"></script>
-  </head>
-  <body class="text-bg-dark">
-    <nav class="navbar text-bg-success mb-5">
-      <div class="container">
-        <h1>
-          <img
-            src="https://logosmarcas.net/wp-content/uploads/2022/01/Red-Cross-Simbolo.png"
-            alt="Bootstrap"
-            height="40"
-          />
-          Comparador de Planos
-        </h1>
-      </div>
-    </nav>
 
-    <div class="container">
-      <div class="card text-bg-dark border-light mb-4">
-        <div class="card-header text-center border-light text-bg-success">
-          <h2>Dados do Usuário</h2>
-        </div>
+<head>
+	<title>Comparador de Planos</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" type="image/x-icon"
+		href="https://logosmarcas.net/wp-content/uploads/2022/01/Red-Cross-Simbolo.png" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+	<script src="./scripts.js" defer></script>
+</head>
 
-        <div class="card-body">
-          <form>
-            <div class="row mb-2">
-              <div class="col">
-                <label for="nome" class="form-label">Nome:</label>
-                <input
-                  type="text"
-                  id="nome"
-                  class="form-control bg-dark-subtle"
-                  placeholder="Digite seu nome"
-                />
-                <strong id="feedback-nome" class="visually-hidden">
-                  Por favor, insira seu nome.
-                </strong>
-              </div>
-            </div>
+<body class="text-bg-dark">
+	<nav class="navbar text-bg-success mb-5">
+		<div class="container">
+			<h1>
+				<img src="https://logosmarcas.net/wp-content/uploads/2022/01/Red-Cross-Simbolo.png" alt="Bootstrap"
+					height="40" />
+				Comparador de Planos
+			</h1>
+		</div>
+	</nav>
 
-            <div class="row mb-2">
-              <div class="col">
-                <label for="peso" class="form-label">Digite o seu peso</label>
-                <div class="input-group">
-                  <input
-                    type="number"
-                    id="peso"
-                    step="0.01"
-                    placeholder="0,00"
-                    class="form-control bg-dark-subtle border-dark"
-                  />
-                  <span class="input-group-text bg-dark-subtle border-dark"
-                    >Kg</span
-                  >
-                </div>
-                <strong id="feedback-peso" class="visually-hidden">
-                  Insira seu peso corretamenta.
-                </strong>
-              </div>
+	<div class="container">
+		<div class="card text-bg-dark border-light mb-4">
+			<div class="card-header text-center border-light text-bg-success">
+				<h2>Dados do Usuário</h2>
+			</div>
 
-              <div class="col">
-                <label for="altura" class="form-label"
-                  >Digite a sua altura</label
-                >
-                <div class="input-group">
-                  <input
-                    type="number"
-                    id="altura"
-                    class="form-control bg-dark-subtle border-dark"
-                    placeholder="170"
-                  />
-                  <span class="input-group-text bg-dark-subtle border-dark"
-                    >cm</span
-                  >
-                </div>
-                <strong id="feedback-altura" class="visually-hidden">
-                  Insira sua altura corretamente.
-                </strong>
-              </div>
+			<div class="card-body">
+				<form>
+					<div class="row mb-2">
+						<div class="col">
+							<label for="nome" class="form-label">Nome:</label>
+							<input type="text" id="nome" class="form-control bg-dark-subtle" placeholder="Digite seu nome" />
+							<strong id="feedback-nome" class="visually-hidden">
+								Por favor, insira seu nome.
+							</strong>
+						</div>
+					</div>
 
-              <div class="col">
-                <label for="idade" class="form-label">Digite a sua idade</label>
-                <input
-                  type="number"
-                  id="idade"
-                  class="form-control bg-dark-subtle"
-                  placeholder="18"
-                />
-                <strong id="feedback-idade" class="visually-hidden">
-                  Insira sua idade corretamente.
-                </strong>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+					<div class="row mb-2">
+						<div class="col">
+							<label for="peso" class="form-label">Digite o seu peso</label>
+							<div class="input-group">
+								<input type="number" id="peso" step="0.01" placeholder="0,00"
+									class="form-control bg-dark-subtle border-dark" />
+								<span class="input-group-text bg-dark-subtle border-dark">Kg</span>
+							</div>
+							<strong id="feedback-peso" class="visually-hidden">
+								Insira seu peso corretamenta.
+							</strong>
+						</div>
 
-      <div class="card text-bg-dark border-light mb-4">
-        <div class="card-header text-center text-bg-success border-light">
-          <h2>IMC</h2>
-        </div>
+						<div class="col">
+							<label for="altura" class="form-label">Digite a sua altura</label>
+							<div class="input-group">
+								<input type="number" id="altura" class="form-control bg-dark-subtle border-dark" placeholder="170" />
+								<span class="input-group-text bg-dark-subtle border-dark">cm</span>
+							</div>
+							<strong id="feedback-altura" class="visually-hidden">
+								Insira sua altura corretamente.
+							</strong>
+						</div>
 
-        <div class="card-body">
-          <div class="row">
-            <div
-              id="divIMC"
-              class="col-6 d-flex align-items-center justify-content-center"
-            >
-              <p class="display-6">Seu IMC é 0</p>
-            </div>
+						<div class="col">
+							<label for="idade" class="form-label">Digite a sua idade</label>
+							<input type="number" id="idade" class="form-control bg-dark-subtle" placeholder="18" />
+							<strong id="feedback-idade" class="visually-hidden">
+								Insira sua idade corretamente.
+							</strong>
+						</div>
 
-            <div class="col-6">
-              <table class="table table-dark table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">IMC</th>
-                    <th scope="col">Situação</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Até 18,4</td>
-                    <td>Abaixo do peso</td>
-                  </tr>
-                  <tr>
-                    <td>18,5 a 24,9</td>
-                    <td>Normal</td>
-                  </tr>
-                  <tr>
-                    <td>25 a 29,9</td>
-                    <td>Sobrepeso</td>
-                  </tr>
-                  <tr>
-                    <td>30 a 34,9</td>
-                    <td>Obesidade</td>
-                  </tr>
-                  <tr>
-                    <td>35 a 40</td>
-                    <td>Obesidade Mórbida Grave</td>
-                  </tr>
-                  <tr>
-                    <td>Mais de 40</td>
-                    <td>Obesidade Mórbida Muito Grave</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+						<div class="col-1 d-flex align-items-end">
+							<button class="btn btn-success" onclick="calcularIMC()">
+								Calcular
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
-      <div class="card text-bg-dark border-light mb-5">
-        <div class="card-header text-center text-bg-success border-light">
-          <h2>Planos Disponiveis</h2>
-        </div>
+		<div class="card text-bg-dark border-light mb-4">
+			<div class="card-header text-center text-bg-success border-light">
+				<h2>IMC</h2>
+			</div>
 
-        <div class="card-body">
-          <div class="row">
-            <div class="col-6">
-              <strong class="text-center">Operadora de Saúde A</strong>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-6 d-flex align-items-center justify-content-center">
+						<p class="display-6">Seu IMC é <span id="valor-IMC">0</span></p>
+					</div>
 
-              <table class="table table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">Plano</th>
-                    <th scope="col">Preço</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Plano Básico</td>
-                    <td id="precoPlanoBasicoA">R$ 0.00</td>
-                  </tr>
-                  <tr>
-                    <td>Plano Standard</td>
-                    <td id="precoPlanoStandardA">R$ 0.00</td>
-                  </tr>
-                  <tr>
-                    <td>Plano Premium</td>
-                    <td id="precoPlanoPremiumA">R$ 0.00</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+					<div class="col-6">
+						<table class="table table-dark table-striped">
+							<thead>
+								<tr>
+									<th scope="col">IMC</th>
+									<th scope="col">Situação</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Até 18,4</td>
+									<td>Abaixo do peso</td>
+								</tr>
+								<tr>
+									<td>18,5 a 24,9</td>
+									<td>Normal</td>
+								</tr>
+								<tr>
+									<td>25 a 29,9</td>
+									<td>Sobrepeso</td>
+								</tr>
+								<tr>
+									<td>30 a 34,9</td>
+									<td>Obesidade</td>
+								</tr>
+								<tr>
+									<td>35 a 40</td>
+									<td>Obesidade Mórbida Grave</td>
+								</tr>
+								<tr>
+									<td>Mais de 40</td>
+									<td>Obesidade Mórbida Muito Grave</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 
-            <div class="col-6">
-              <strong class="text-center">Operadora de Saúde B</strong>
+		<div class="card text-bg-dark border-light mb-5">
+			<div class="card-header text-center text-bg-success border-light">
+				<h2>Planos Disponiveis</h2>
+			</div>
 
-              <table class="table table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">Plano</th>
-                    <th scope="col">Preço</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Plano Básico</td>
-                    <td id="precoPlanoBasicoB">R$ 0.00</td>
-                  </tr>
-                  <tr>
-                    <td>Plano Standard</td>
-                    <td id="precoPlanoStandardB">R$ 0.00</td>
-                  </tr>
-                  <tr>
-                    <td>Plano Premium</td>
-                    <td id="precoPlanoPremiumB">R$ 0.00</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-6">
+						<strong class="text-center">Operadora de Saúde A</strong>
 
-      <div
-        id="idCardResultado"
-        class="card text-bg-dark border-light mb-5 visually-hidden"
-      >
-        <div class="card-body text-center">
-          <strong id="idResultado"></strong>
-        </div>
-      </div>
-    </div>
-  </body>
+						<table class="table table-dark">
+							<thead>
+								<tr>
+									<th scope="col">Plano</th>
+									<th scope="col">Preço</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Plano Básico</td>
+									<td>R$ <span id="precoPlanoBasicoA">0.00</span></td>
+								</tr>
+								<tr>
+									<td>Plano Standard</td>
+									<td>R$ <span id="precoPlanoStandardA">0.00</span></td>
+								</tr>
+								<tr>
+									<td>Plano Premium</td>
+									<td>R$ <span id="precoPlanoPremiumA">0.00</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="col-6">
+						<strong class="text-center">Operadora de Saúde B</strong>
+
+						<table class="table table-dark">
+							<thead>
+								<tr>
+									<th scope="col">Plano</th>
+									<th scope="col">Preço</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Plano Básico</td>
+									<td>R$ <span id="precoPlanoBasicoB">0.00</span></td>
+								</tr>
+								<tr>
+									<td>Plano Standard</td>
+									<td>R$ <span id="precoPlanoStandardB">0.00</span></td>
+								</tr>
+								<tr>
+									<td>Plano Premium</td>
+									<td>R$ <span id="precoPlanoPremiumB">0.00</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="idCardResultado" class="card text-bg-dark border-light mb-5 visually-hidden">
+			<div class="card-body text-center">
+				<strong id="idResultado"></strong>
+			</div>
+		</div>
+	</div>
+</body>
+
 </html>
