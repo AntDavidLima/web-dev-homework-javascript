@@ -135,23 +135,42 @@ function calcularEFormatarValoresPlanosOperadoraB(fatorComorbidade, imc) {
 }
 
 function parametrosContemErros(nome, peso, idade, altura) {
+	const feedbackNome = document.getElementById("feedback-nome");
+	const feedbackPeso = document.getElementById("feedback-peso");
+	const feedbackAltura = document.getElementById("feedback-altura");
+	const feedbackIdade = document.getElementById("feedback-idade");
+
+	let contemErros = false;
+
 	if (typeof nome !== "string" || nome.trim().length === 0) {
-		return true;
+		contemErros = true;
+		feedbackNome.classList.remove("visually-hidden");
+	} else {
+		feedbackNome.classList.add("visually-hidden");
 	}
 
 	if (isNaN(peso) || peso <= 0) {
-		return true;
+		contemErros = true;
+		feedbackPeso.classList.remove("visually-hidden");
+	} else {
+		feedbackPeso.classList.add("visually-hidden");
 	}
 
 	if (isNaN(idade) || idade <= 0) {
-		return true;
+		contemErros = true;
+		feedbackIdade.classList.remove("visually-hidden");
+	} else {
+		feedbackIdade.classList.add("visually-hidden");
 	}
 
 	if (isNaN(altura) || altura <= 0) {
-		return true;
+		contemErros = true;
+		feedbackAltura.classList.remove("visually-hidden");
+	} else {
+		feedbackAltura.classList.add("visually-hidden");
 	}
 
-	return false;
+	return contemErros;
 }
 
 function limparPagina() {
